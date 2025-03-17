@@ -9,9 +9,9 @@ class LocalDevelopmentConfig(Config):
     
     # Security configuration
     SECRET_KEY = 'housesync-secret-key' # hash user credentials in session
-    SECURITY_PASSWORD = 'bycrypt' # Mechanism for password hashing
+    SECURITY_PASSWORD = 'bcrypt' # Mechanism for password hashing
     SECURITY_PASSWORD_SALT = 'housesync-password-salt' # help in password hashing
     WTF_CSRF_ENABLED = False # Disable CSRF protection for testing
-    SECURITY_TOKEN_AUTHENTICATION_HEADER = 'Authorization-Token' # Use token authentication
+    SECURITY_TOKEN_AUTHENTICATION_HEADER = 'Auth-Token' # Use token authentication
     
     
