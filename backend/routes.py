@@ -1,9 +1,11 @@
-from flask import current_app as app, jsonify
+from flask import current_app as app, jsonify, request, render_template
 from flask_security import auth_required, roles_required, current_user, roles_accepted
+
+datastore = app.security.datastore
 
 @app.route('/')
 def home():
-    return 'hello world'
+    return 'hello'
 
 @app.route('/admin')
 @auth_required('token')
@@ -23,3 +25,13 @@ def user_page():
         "email": user.email,
         "message": "User login successful"
     })
+    
+@app.route('/register', methods=['POST'])
+def register():
+    data = request.get_json()
+    user = datastore.create_user(**data)
+    return jsonify({
+        "message": "User created",
+        "user": user.to_dict()
+    })  
+    

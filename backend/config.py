@@ -1,3 +1,4 @@
+
 class Config():
     DEBUG = False
     SQLALCHEMY_TRACK_MODIFICATIONS = True
