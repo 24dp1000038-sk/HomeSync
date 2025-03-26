@@ -1,4 +1,4 @@
-from flask import current_app as app, jsonify, request, render_template
+from flask import current_app as app, jsonify, request
 from flask_security import auth_required, roles_required, current_user, roles_accepted
 
 datastore = app.security.datastore
