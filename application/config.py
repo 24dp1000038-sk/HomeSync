@@ -1,4 +1,3 @@
-
 class Config():
     DEBUG = False
     SQLALCHEMY_TRACK_MODIFICATIONS = True
@@ -14,5 +13,3 @@ class LocalDevelopmentConfig(Config):
     SECURITY_PASSWORD_SALT = 'housesync-password-salt' # help in password hashing
     WTF_CSRF_ENABLED = False # Disable CSRF protection for testing
     SECURITY_TOKEN_AUTHENTICATION_HEADER = 'Auth-Token' # Use token authentication
-    
-    

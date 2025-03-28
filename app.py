@@ -1,17 +1,17 @@
 from flask import Flask
-from .database import db
-from .models import User, Role
-from .config import LocalDevelopmentConfig
+from application.database import db
+from application.models import User, Role
+from application.config import LocalDevelopmentConfig
 from flask_security import Security, SQLAlchemyUserDatastore
 from flask_cors import CORS
 
 app = None
 
 def start():
-    app = Flask(__name__, template_folder='frontend', static_folder='frontend/static', static_url_path='/static')
+    app = Flask(__name__)
     app.config.from_object(LocalDevelopmentConfig)
+    CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
     db.init_app(app)
-    CORS(app)
     datastore = SQLAlchemyUserDatastore(db, User, Role)
     app.security = Security(app, datastore)
     app.app_context().push()
@@ -20,8 +20,9 @@ def start():
     
 app = start()
 
-from .create_initial_data import *
-from .routes import *   
+from application.create_data import *
+from application.routes import *   
+
 
 if __name__ == '__main__':
     app.run()

@@ -1,10 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '@/views/HomeView.vue';
-import AboutView from '@/views/AboutView.vue';
 import LoginView from '@/views/LoginView.vue';
 import ProRegister from '@/views/ProRegister.vue';
 import UserRegister from '@/views/UserRegister.vue';
 import NotFound from '@/views/NotFound.vue';
+import CustomerView from '@/views/CustomerView.vue';
+import ProView from '@/views/ProView.vue';
+import AdminView from '@/views/AdminView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,11 +15,6 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
-    },
-    {
-      path: '/about',
-      name: 'about', 
-      component:AboutView,
     },
     {
       path: '/login',
@@ -33,6 +30,21 @@ const router = createRouter({
       path: '/user-register',
       name: 'user-register', 
       component:UserRegister,
+    },
+    {
+      path: '/pro_page',
+      name: 'por_page', 
+      component:ProView,
+    },
+    {
+      path: '/admin_page',
+      name: 'admin_page', 
+      component:AdminView,
+    },
+    {
+      path: '/user_page',
+      name: 'user_page', 
+      component:CustomerView,
     },
     {
       path: '/:catchAll(.*)',

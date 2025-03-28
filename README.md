@@ -40,13 +40,13 @@ The HomeSync is a multi-user platform built with Flask, Vue.js, and SQLite, desi
 
     * Open the terminal.
     * Navigate to the project directory.
-    * Create a virtual environment: `python -m venv foldername`
-    * Activate the virtual environment:
-        * On Linux/macOS: `source foldername/bin/activate`
-        * On Windows: `foldername\Scripts\activate`
+    * Create a virtual environment: `python -m venv .env`
+    * Activate the virtual environment 
+        * On Windows: `.env\Scripts\activate`
     * Install backend dependencies: `pip install -r requirements.txt`
     * Navigate to the frontend directory: `cd frontend`
     * Install frontend dependencies: `npm install`
+    * Install frontend dependencies: `npm install bootstrap axios`
 
 3. **Database setup:**
 
@@ -63,13 +63,12 @@ The HomeSync is a multi-user platform built with Flask, Vue.js, and SQLite, desi
 
 6. **Flask API setup:**
 
-    * Navigate to the backend directory: `cd ../backend`
-    * Run the Flask application: `python app.py`
+    * Run the Flask application: `python -m  backend.app`
 
 7. **Vue.js setup:**
 
     * Navigate to the frontend directory: `cd ../frontend`
-    * Run the Vue.js development server: `npm run serve`
+    * Run the Vue.js development server: `npm run dev`
 
 🔑 **User Roles & Authentication**
 

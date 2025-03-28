@@ -1,13 +1,23 @@
 <template>
-  <div class="bg-gray-100">
+  <div class="home">
+    <h1>{{ message }}</h1>
   </div>
 </template>
 
-<style scoped>
-</style>
-
 <script setup>
-import { ref } from "vue";
+import axios from 'axios';
+import { ref, onMounted } from 'vue';
 
-const name = ref("Sam Smith");
+const message = ref('Loading...');
+const fetchData = async () => {
+  try {
+    const response = await axios.get('http://127.0.0.1:5000/');
+    message.value = response.data.message;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
+onMounted(() => {
+  fetchData();
+});
 </script>
