@@ -1,5 +1,5 @@
 from .database import db
-from flask_security import UserMixin, RoleMixin # type: ignore
+from flask_security import UserMixin, RoleMixin
 from datetime import datetime
 
 user_roles = db.Table('user_roles',

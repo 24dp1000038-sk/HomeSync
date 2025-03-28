@@ -10,7 +10,7 @@ app = None
 def start():
     app = Flask(__name__)
     app.config.from_object(LocalDevelopmentConfig)
-    CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+    CORS(app)
     db.init_app(app)
     datastore = SQLAlchemyUserDatastore(db, User, Role)
     app.security = Security(app, datastore)
@@ -22,7 +22,6 @@ app = start()
 
 from application.create_data import *
 from application.routes import *   
-
 
 if __name__ == '__main__':
     app.run()

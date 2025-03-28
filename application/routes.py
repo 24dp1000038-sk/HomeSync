@@ -1,13 +1,13 @@
-from flask import current_app as app, jsonify, request
-from flask_security import login_user, hash_password, verify_password, auth_required, logout_user, roles_required
+from flask import current_app as app, jsonify, request, render_template
+from flask_security import login_user, hash_password, verify_password, auth_required, logout_user, roles_required, current_user
 from  .database import db
 from .models import Customer, Professional
 
 datastore = app.security.datastore
 
-@app.route('/')
-def index():
-    return jsonify({"message": "Hello from backend"}), 200
+@app.route('/', methods = ['GET'])
+def home():
+    return render_template('index.html')
 
 @app.route('/api/login', methods=['POST'])
 def login():
