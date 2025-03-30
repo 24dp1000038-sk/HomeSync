@@ -10,7 +10,7 @@ export default {
     methods: {
       logoutUser() {
         localStorage.removeItem('auth_token');
-        localStorage.removeItem('id');
+        localStorage.removeItem('user_id');
         localStorage.removeItem('user_role');
         this.$emit('logout');
         this.$router.push('/login');

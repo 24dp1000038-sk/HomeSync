@@ -11,74 +11,116 @@ def home():
 
 @app.route('/api/login', methods=['POST'])
 def login():
-    data = request.get_json()
-    email = data['email']
-    password = data['password']
-    
-    if not email:
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({"message": "No data provided"}), 400
+        email = data.get('email')
+        password = data.get('password')
+        
+        if not email or not password:
+            return jsonify({"message": "Email and password are required"}), 400
+        
+        user = app.security.datastore.find_user(email=email)
+        if not user:
+            return jsonify({"message": "User not found"}), 404
+        if not verify_password(password, user.password):
+            return jsonify({"message": "Invalid credentials"}), 401
+        
+        login_user(user)
+        user_role = user.roles[0].name
         return jsonify({
-            "message": "Email is required"
-        }), 400
-    
-    user = app.security.datastore.find_user(email = email)
-    
-    if user:
-        if verify_password(password, user.password):
-            login_user(user)
-            return jsonify({
-                "message": "Logged in successfully",
-                "auth-token": user.get_auth_token(),
-                "user_id": user.id,
-            }), 200
-        else:
-            return jsonify({
-                "message": "Invalid password"
-            }), 400
-    else:
-        return jsonify({
-            "message": "User not found"
-        }), 404
+            "message": "Login successful",
+            "auth_token": user.get_auth_token(),
+            "user_id": user.id,
+            "user_role": user_role,
+        }), 200
+        
+    except Exception as e:
+        return jsonify({"message": "Problem in Login"}, e), 500
 
 @app.route('/api/register', methods=['POST'])
 def register():
-    data = request.get_json()
-    email = data['email']
-    password = data['password']
-    password2 = data['password2']
-    name = data['name']
     try:
-        if not email or not password or not name:
-            return jsonify({"message": "Missing email, password or name"}), 400
-        
-        if password != password2:
-            return jsonify({"message": "password don't match"}), 400
-        
-        if app.security.datastore.find_user(email=data['email']):
-            return jsonify({"message": "User already exists"}), 400
+        data = request.get_json()
+        if not data:
+            return jsonify({"message": "Error in data!"}), 400
 
-        if 'phone' in data and 'address' in data:
-            user = app.security.datastore.create_user(email=email, password=hash_password(password), name=name, roles=['user'])
+        required_fields = ['email', 'password', 'password2', 'name']
+        if not all(field in data for field in required_fields):
+            return jsonify({"message": "Missing required fields!"}), 400
+
+        email = data['email']
+        password = data['password']
+        password2 = data['password2']
+        name = data['name']
+
+        if password != password2:
+            return jsonify({"message": "Passwords don't match"}), 400
+
+        if len(password) <= 5:
+            return jsonify({"message": "Password must be at least 5 characters"}), 400
+
+        if app.security.datastore.find_user(email=email):
+            return jsonify({"message": "Email already registered"}), 409
+
+        if all(field in data for field in ['phone', 'address']):
+            user = app.security.datastore.create_user(
+                email=email,
+                password=hash_password(password),
+                name=name,
+                roles=['user']
+            )
             db.session.add(user)
-            db.session.commit()
-            customer = Customer(user_id=user.id, phone= data['phone'], address= data['address'])
+            db.session.flush() 
+
+            customer = Customer(
+                user_id=user.id,
+                phone=data['phone'],
+                address=data['address']
+            )
             db.session.add(customer)
             db.session.commit()
-            return jsonify({"message": "Customer created successfully"}), 201
 
-        elif 'experience' in data and 'service_type' in data:
-            app.security.datastore.create_user(email=email, password=password, name=name, roles=['pro'])
+            return jsonify({
+                "message": "Customer registered successfully",
+                "user_id": user.id,
+                "auth_token": user.get_auth_token()
+            }), 201
+
+        elif all(field in data for field in ['experience', 'service_type']):
+            user = app.security.datastore.create_user(
+                email=email,
+                password=hash_password(password),
+                name=name,
+                roles=['pro']
+            )
             db.session.add(user)
-            db.session.commit()
-            professional = Professional(user_id=user.id, experience= data['experience'], service_type= data['service_type']) 
+            db.session.flush()
+
+            professional = Professional(
+                user_id=user.id,
+                experience=data['experience'],
+                service_type=data['service_type'],
+                is_verified=False
+            )
             db.session.add(professional)
             db.session.commit()
-            return jsonify({"message": "Professional created successfully"}), 201
+
+            return jsonify({
+                "message": "Professional registered successfully",
+                "user_id": user.id,
+                "auth_token": user.get_auth_token()
+            }), 201
+
+        else:
+            return jsonify({
+                "message": "Missing data"
+            }), 400
+
     except Exception as e:
-        print(e)
         db.session.rollback()
-        app.security.datastore.delete_user(user)
-        db.session.commit()
-        return jsonify({"message": "Error in register"}), 400
+        return jsonify({"message": "Internal server error during registration"}), 500
     
 @app.route('/api/logout', methods=['POST'])
 @auth_required('token')

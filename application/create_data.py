@@ -11,12 +11,12 @@ with app.app_context():
     db.session.commit()
     
     if not app.security.datastore.find_user(email= 'admin@gmail.com'):
-        app.security.datastore.create_user(email = 'admin@gmail.com',name='admin', password = hash_password('hello@123'), roles = ['admin'])
+        app.security.datastore.create_user(email = 'admin@gmail.com',name='admin', password = hash_password('hello'), roles = ['admin'])
         
     if not app.security.datastore.find_user(email= 'sam@gmail.com'):
-        app.security.datastore.create_user(email = 'sam@gmail.com',name='sam', password = hash_password('hello@123'), roles = ['user'])
+        app.security.datastore.create_user(email = 'sam@gmail.com',name='sam', password = hash_password('hello'), roles = ['user'])
         
     if not app.security.datastore.find_user(email='pro@gmail.com'):
-        app.security.datastore.create_user(email='pro@gmail.com', name='pro', password = hash_password('hello@123'), roles = ['pro'])
+        app.security.datastore.create_user(email='pro@gmail.com', name='pro', password = hash_password('hello'), roles = ['pro'])
     
     db.session.commit()

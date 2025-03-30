@@ -17,8 +17,6 @@ export default {
         </div>
       </div>
     </nav>
-
-    <!-- Main Content -->
     <main class="flex-grow-1 d-flex align-items-center py-5 mt-5">
       <div class="container">
         <div class="row justify-content-center">
@@ -26,8 +24,6 @@ export default {
             <div class="card border-primary shadow-lg p-3 p-md-4 bg-white rounded">
               <form @submit.prevent="loginUser">
                 <h3 class="text-center mb-4">Login</h3>
-                
-                <!-- Email Input -->
                 <div class="mb-3">
                   <label for="email" class="form-label">Email (Username)</label>
                   <input
@@ -41,8 +37,6 @@ export default {
                     v-model="formData.email"
                   >
                 </div>
-                
-                <!-- Password Input with Toggle -->
                 <div class="mb-3 position-relative">
                   <label for="password" class="form-label">Password</label>
                   <input
@@ -58,13 +52,9 @@ export default {
                     <img :src="showPassword ? eyeOpen : eyeClose" alt="Toggle password">
                   </button>
                 </div>
-                
-                <!-- Login Button -->
                 <div class="d-grid mb-3">
                   <button type="submit" class="btn btn-primary">Login</button>
                 </div>
-                
-                <!-- Registration Links -->
                 <div class="d-flex flex-column flex-sm-row justify-content-between gap-2">
                   <router-link to="./user_register" class="btn btn-outline-success flex-grow-1">
                     Create Account
@@ -102,27 +92,33 @@ export default {
           },
           body: JSON.stringify(this.formData),
         });
+    
+        const data = await response.json();
         
         if (!response.ok) {
-          throw new Error('Login failed');
+          throw new Error(data.message || 'Login failed');
         }
-        
-        const data = await response.json();
-        localStorage.setItem("auth_token", data["auth-token"]);
-        localStorage.setItem("id", data.id);
-        
-        // Redirect based on user role
-        if (data.role === "user") {
-          this.$router.push('/user_dashboard');
-        } else if (data.role === "pro") {
-          this.$router.push('/pro_dashboard');
-        } else if (data.role === "admin") {
-          this.$router.push('/admin_dashboard');
+    
+        localStorage.setItem("auth_token", data.auth_token);
+        localStorage.setItem("user_id", data.user_id);
+        localStorage.setItem("user_role", data.user_role);
+
+        switch(data.user_role) {
+          case 'admin':
+            this.$router.push('/admin_dashboard');
+            break;
+          case 'pro':
+            this.$router.push('/pro_dashboard');
+            break;
+          case 'user':
+            this.$router.push('/user_dashboard');
+            break;
+          default:
+            this.$router.push('/');
         }
-        
-      } catch (error) {
-        console.error("Error:", error);
-        alert("Login failed. Please check your credentials and try again.");
+      } catch (error) { 
+        console.error("Login error:", error);
+        this.errorMessage = error.message || "Login failed. Please try again.";
       }
     },
     togglePass() {
