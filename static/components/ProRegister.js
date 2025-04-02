@@ -2,7 +2,7 @@ export default {
   template: `
   <div class="container-fluid min-vh-100 bg-light d-flex flex-column">
     <link rel="stylesheet" href="../static/css/nav.css">
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow-sm py-2 nav-sec">
+    <nav class="navbar navbar-expand-lg navbar-dark nav-color fixed-top">
       <div class="container">
         <router-link class="navbar-brand d-flex align-items-center" to="/">
           <i class="bi bi-house-heart-fill me-2 fs-4"></i>

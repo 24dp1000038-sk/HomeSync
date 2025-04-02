@@ -3,19 +3,20 @@ export default {
   template: `
   <div class="w-100 container-fluid p-0">
     <link rel="stylesheet" href="../static/css/home.css">
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow-sm py-2 nav-sec">
-    <div class="container">
-    <router-link class="navbar-brand d-flex align-items-center" to="/">
-      <i class="bi bi-house-heart-fill me-2 fs-4"></i>
-      <span class="fw-bold fs-4" style="letter-spacing: 0.5px;">HouseSync</span>
-    </router-link>
-    <div class="ms-auto">
-      <router-link to="/login" class="btn btn-outline-light px-4 rounded-pill">
-        <i class="bi bi-box-arrow-in-right me-2"></i>
-        <span class="d-none d-sm-inline">Login</span>
-      </router-link>
-    </div>
-    </div>
+    <link rel="stylesheet" href="../static/css/nav.css">
+    <nav class="navbar navbar-expand-lg navbar-dark nav-color fixed-top">
+      <div class="container">
+        <router-link class="navbar-brand d-flex align-items-center" to="/">
+          <i class="bi bi-house-heart-fill me-2 fs-4"></i>
+          <span class="fw-bold fs-4" style="letter-spacing: 0.5px;">HouseSync</span>
+        </router-link>
+        <div class="ms-auto">
+          <router-link to="/login" class="btn btn-outline-light px-4 rounded-pill">
+            <i class="bi bi-box-arrow-in-right me-2"></i>
+            <span class="d-none d-sm-inline">Login</span>
+          </router-link>
+        </div>
+      </div>
     </nav>
 
     <header class="hero-section text-white text-center">

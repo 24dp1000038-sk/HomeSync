@@ -1,43 +1,36 @@
 export default {
-    template: `
+  template: `
     <div class="user-dashboard container-fluid vh-100 d-flex flex-column bg-light">
-      <!-- User Navigation -->
-      <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top shadow-sm py-2">
+    <link rel="stylesheet" href="../static/css/nav.css">
+      <nav class="navbar navbar-expand-lg navbar-dark nav-color fixed-top">
         <div class="container">
           <router-link class="navbar-brand d-flex align-items-center" to="/user">
             <i class="bi bi-house-heart me-2 fs-4"></i>
             <span class="fw-bold fs-4">HouseSync User</span>
           </router-link>
-          
-          <!-- Right-side Navigation -->
           <div class="d-flex align-items-center ms-auto">
-            <!-- Search Bar -->
-            <div class="input-group me-3" style="width: 250px;">
-              <input type="text" class="form-control" placeholder="Search services...">
-              <button class="btn btn-light" type="button">
-                <i class="bi bi-search"></i>
+            <div class="d-flex align-items-center">
+              <div class="me-3">
+                <router-link to="/admin_search" class="btn btn-light">
+                  <i class="bi bi-search"></i>
+                  <span >Search</span>
+                </router-link>
+              </div>
+              <div class="me-3">
+                <router-link to="/admin_summary" class="btn btn-dark">
+                  <i class="bi bi-file-text"></i>
+                  <span>Summary</span>
+                </router-link>
+              </div>
+              <button class="btn btn-danger" @click="logout">
+                <i class="bi bi-box-arrow-right me-1"></i> Logout
               </button>
-            </div>
-            
-            <!-- User Dropdown -->
-            <div class="dropdown me-3">
-              <button class="btn btn-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown">
-                <i class="bi bi-person-circle me-1"></i> My Account
-              </button>
-              <ul class="dropdown-menu">
-                <li><router-link class="dropdown-item" to="/user/profile">Profile</router-link></li>
-                <li><router-link class="dropdown-item" to="/user/settings">Settings</router-link></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#" @click="logout">Logout</a></li>
-              </ul>
             </div>
           </div>
         </div>
       </nav>
   
-      <!-- Main Content -->
       <div class="container mt-5 pt-4">
-        <!-- Services Section -->
         <div class="card shadow-lg mb-4">
           <div class="card-header bg-white">
             <h5 class="mb-0">Available Services</h5>
@@ -150,123 +143,128 @@ export default {
       </div>
     </div>
     `,
-    data() {
-      return {
-        services: [
-          {
-            id: 1,
-            name: "Plumbing Repair",
-            description: "Fix leaks, install fixtures, and other plumbing services",
-            duration: 2,
-            price: 50
-          },
-          {
-            id: 2,
-            name: "Electrical Work",
-            description: "Wiring, installations, and electrical repairs",
-            duration: 3,
-            price: 65
-          },
-          {
-            id: 3,
-            name: "Home Cleaning",
-            description: "Thorough cleaning of your entire home",
-            duration: 4,
-            price: 80
-          }
-        ],
-        myRequests: [
-          {
-            id: 1001,
-            service: "Plumbing Repair",
-            professional: "John Smith",
-            date: "2023-05-15",
-            status: "Completed"
-          },
-          {
-            id: 1002,
-            service: "Electrical Work",
-            professional: null,
-            date: "2023-05-18",
-            status: "Pending"
-          }
-        ],
-        recommendedPros: [
-          {
-            id: 101,
-            name: "John Smith",
-            serviceType: "Plumbing",
-            rating: 4.8,
-            reviews: 124,
-            experience: 5
-          },
-          {
-            id: 102,
-            name: "Sarah Johnson",
-            serviceType: "Electrical",
-            rating: 4.9,
-            reviews: 89,
-            experience: 7
-          }
-        ],
-        selectedService: null,
-        serviceRequest: {
-          details: '',
-          date: '',
-          time: '',
-          address: ''
-        }
+  data() {
+    return {
+      services: [
+        {
+          id: 1,
+          name: "Plumbing Repair",
+          description:
+            "Fix leaks, install fixtures, and other plumbing services",
+          duration: 2,
+          price: 50,
+        },
+        {
+          id: 2,
+          name: "Electrical Work",
+          description: "Wiring, installations, and electrical repairs",
+          duration: 3,
+          price: 65,
+        },
+        {
+          id: 3,
+          name: "Home Cleaning",
+          description: "Thorough cleaning of your entire home",
+          duration: 4,
+          price: 80,
+        },
+      ],
+      myRequests: [
+        {
+          id: 1001,
+          service: "Plumbing Repair",
+          professional: "John Smith",
+          date: "2023-05-15",
+          status: "Completed",
+        },
+        {
+          id: 1002,
+          service: "Electrical Work",
+          professional: null,
+          date: "2023-05-18",
+          status: "Pending",
+        },
+      ],
+      recommendedPros: [
+        {
+          id: 101,
+          name: "John Smith",
+          serviceType: "Plumbing",
+          rating: 4.8,
+          reviews: 124,
+          experience: 5,
+        },
+        {
+          id: 102,
+          name: "Sarah Johnson",
+          serviceType: "Electrical",
+          rating: 4.9,
+          reviews: 89,
+          experience: 7,
+        },
+      ],
+      selectedService: null,
+      serviceRequest: {
+        details: "",
+        date: "",
+        time: "",
+        address: "",
+      },
+    };
+  },
+  methods: {
+    logout() {
+      this.$router.push("/login");
+    },
+    requestService(serviceId) {
+      this.selectedService = this.services.find((s) => s.id === serviceId);
+      this.serviceRequest = {
+        details: "",
+        date: "",
+        time: "",
+        address: "",
+      };
+      new bootstrap.Modal(
+        document.getElementById("serviceRequestModal")
+      ).show();
+    },
+    submitServiceRequest() {
+      const newId = Math.max(...this.myRequests.map((r) => r.id)) + 1;
+      this.myRequests.unshift({
+        id: newId,
+        service: this.selectedService.name,
+        professional: null,
+        date: new Date().toISOString().split("T")[0],
+        status: "Pending",
+      });
+      bootstrap.Modal.getInstance(
+        document.getElementById("serviceRequestModal")
+      ).hide();
+    },
+    viewRequest(requestId) {
+      this.$router.push(`/user/requests/${requestId}`);
+    },
+    cancelRequest(requestId) {
+      const request = this.myRequests.find((r) => r.id === requestId);
+      if (request) {
+        request.status = "Cancelled";
       }
     },
-    methods: {
-      logout() {
-        this.$router.push('/login');
-      },
-      requestService(serviceId) {
-        this.selectedService = this.services.find(s => s.id === serviceId);
-        this.serviceRequest = {
-          details: '',
-          date: '',
-          time: '',
-          address: ''
-        };
-        new bootstrap.Modal(document.getElementById('serviceRequestModal')).show();
-      },
-      submitServiceRequest() {
-        const newId = Math.max(...this.myRequests.map(r => r.id)) + 1;
-        this.myRequests.unshift({
-          id: newId,
-          service: this.selectedService.name,
-          professional: null,
-          date: new Date().toISOString().split('T')[0],
-          status: "Pending"
-        });
-        bootstrap.Modal.getInstance(document.getElementById('serviceRequestModal')).hide();
-      },
-      viewRequest(requestId) {
-        this.$router.push(`/user/requests/${requestId}`);
-      },
-      cancelRequest(requestId) {
-        const request = this.myRequests.find(r => r.id === requestId);
-        if (request) {
-          request.status = "Cancelled";
-        }
-      },
-      viewProfessional(proId) {
-        this.$router.push(`/user/professionals/${proId}`);
-      },
-      formatDate(dateString) {
-        return new Date(dateString).toLocaleDateString();
-      },
-      getStatusColor(status) {
-        const statusColors = {
-          'Pending': 'warning',
-          'Assigned': 'info',
-          'In Progress': 'primary',
-          'Completed': 'success',
-          'Cancelled': 'danger'
-        };
-        return statusColors[status] || 'secondary';
-      }
-    }
-  }
+    viewProfessional(proId) {
+      this.$router.push(`/user/professionals/${proId}`);
+    },
+    formatDate(dateString) {
+      return new Date(dateString).toLocaleDateString();
+    },
+    getStatusColor(status) {
+      const statusColors = {
+        Pending: "warning",
+        Assigned: "info",
+        "In Progress": "primary",
+        Completed: "success",
+        Cancelled: "danger",
+      };
+      return statusColors[status] || "secondary";
+    },
+  },
+};

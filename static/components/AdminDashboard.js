@@ -1,27 +1,26 @@
 export default {
   template: `
   <div class="admin-dashboard container-fluid vh-100 d-flex flex-column bg-light">
-    <!-- Admin Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top shadow-sm py-2">
+    <link rel="stylesheet" href="../static/css/nav.css">
+    <nav class="navbar navbar-expand-lg navbar-dark nav-color fixed-top">
       <div class="container">
         <router-link class="navbar-brand d-flex align-items-center" to="/admin">
           <i class="bi bi-house-heart-fill me-2 fs-4"></i>
           <span class="fw-bold fs-4">HouseSync Admin</span>
         </router-link>
-        
-        <!-- Search Bar -->
-        <div class="d-flex align-items-center ms-auto">
-          <div class="input-group me-3 btn btn-warning" style="width: 250px;">
-            <router-link to="/">
-              Search<i class="p-3 bi bi-search"></i>
+        <div class="d-flex align-items-center">
+          <div class="me-3">
+            <router-link to="/admin_search" class="btn btn-light">
+              <i class="bi bi-search"></i>
+              <span >Search</span>
             </router-link>
           </div>
-          <div class="input-group me-3 btn btn-warning" style="width: 250px;">
-            <router-link to="/">
-              Summary<i class="p-3 bi bi-search"></i>
+          <div class="me-3">
+            <router-link to="/admin_summary" class="btn btn-dark">
+              <i class="bi bi-file-text"></i>
+              <span>Summary</span>
             </router-link>
           </div>
-          
           <button class="btn btn-danger" @click="logout">
             <i class="bi bi-box-arrow-right me-1"></i> Logout
           </button>
@@ -29,9 +28,7 @@ export default {
       </div>
     </nav>
 
-    <!-- Main Content -->
     <div class="container mt-5 pt-4">
-      <!-- Services Section -->
       <div class="card shadow-lg mb-4">
         <div class="card-header bg-white d-flex justify-content-between align-items-center">
           <h5 class="mb-0">Services Management</h5>
@@ -46,9 +43,7 @@ export default {
                 <tr>
                   <th>ID</th>
                   <th>Service Name</th>
-                  <th>Base Price</th>
-                  <th>Duration</th>
-                  <th>Status</th>
+                  <th>Base Price (₹)</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -57,16 +52,14 @@ export default {
                   <td>{{ service.id }}</td>
                   <td>{{ service.name }}</td>
                   <td>{{ service.price }}</td>
-                  <td>{{ service.duration }} hrs</td>
-                  <td>
-                    <span class="badge bg-success">Active</span>
-                  </td>
                   <td>
                     <button class="btn btn-sm btn-outline-primary me-1">
                       <i class="bi bi-pencil"></i>
+                      <span>Edit</span>
                     </button>
                     <button class="btn btn-sm btn-outline-danger">
                       <i class="bi bi-trash"></i>
+                      <span>Delete</span>
                     </button>
                   </td>
                 </tr>
@@ -188,12 +181,8 @@ export default {
                 <textarea class="form-control" v-model="newService.description" rows="3"></textarea>
               </div>
               <div class="mb-3">
-                <label class="form-label">Base Price ($)</label>
+                <label class="form-label">Base Price (₹)</label>
                 <input type="number" class="form-control" v-model="newService.price" required>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Estimated Duration (hours)</label>
-                <input type="number" class="form-control" v-model="newService.duration" required>
               </div>
               <button type="submit" class="btn btn-primary w-100">Create Service</button>
             </form>
@@ -206,10 +195,10 @@ export default {
   data() {
     return {
       services: [
-        { id: 1, name: "Plumbing", price: 50, duration: 2 },
-        { id: 2, name: "Electrical", price: 60, duration: 3 },
-        { id: 3, name: "Cleaning", price: 40, duration: 2 },
-        { id: 4, name: "Carpentry", price: 55, duration: 4 }
+        { id: 1, name: "Plumbing", price: 800},
+        { id: 2, name: "Electrical", price: 600},
+        { id: 3, name: "Cleaning", price: 400},
+        { id: 4, name: "Carpentry", price: 700}
       ],
       professionals: [
         { id: 101, name: "John Smith", email: "john@example.com", serviceType: "Plumbing", experience: 5, status: "Pending" },
@@ -227,7 +216,6 @@ export default {
         name: '',
         description: '',
         price: '',
-        duration: ''
       }
     }
   },

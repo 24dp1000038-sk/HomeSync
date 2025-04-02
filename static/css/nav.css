@@ -1,5 +1,3 @@
-.nav-sec{
-    background: linear-gradient(135deg, #355ea9 0%, #2a5298 100%);
-    padding:70px;
-   }
-   
+.nav-color {
+  background: linear-gradient(135deg, #355ea9 0%, #2a5298 100%);
+}

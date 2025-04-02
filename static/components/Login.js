@@ -3,7 +3,7 @@ export default {
   <div class="container-fluid min-vh-100 bg-light d-flex flex-column">
     <link rel="stylesheet" href="../static/css/nav.css">
     <link rel="stylesheet" href="../static/css/password.css">
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow-sm py-2 nav-sec">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow-sm py-2 nav-color">
       <div class="container">
         <router-link class="navbar-brand d-flex align-items-center" to="/">
           <i class="bi bi-house-heart-fill me-2 fs-4"></i>
@@ -48,8 +48,8 @@ export default {
                     required
                     v-model="formData.password"
                   >
-                  <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y pe-3" @click="togglePass">
-                    <img :src="showPassword ? eyeOpen : eyeClose" alt="Toggle password">
+                  <button type="button" class="btn btn-link position-absolute end-0 top-50 btn-position translate-middle-y"@click="togglePass">
+                    <img :src="showPassword ? eyeOpen : eyeClose" class="toggle-img" alt="Toggle password">
                   </button>
                 </div>
                 <div class="d-grid mb-3">
